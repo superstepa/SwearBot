@@ -4,6 +4,11 @@ import json
 import urllib2
 import random
 
+'''
+TODO:
+COMPLETELY MOVE ALL REFERNCES TO EXTERNAL FUNCTIONS OUT OF THE MAIN CLASS
+'''
+
 with open("config.json") as cfg:
     CONFIG = json.load(cfg)
 
@@ -92,7 +97,7 @@ class SwearCounter:
                     self.announce_swearcount()
 
     def announce_swearcount(self):
-        message = "Swear Counter: " + str(self.swearcount)
+        message = "Swear Counter: {}".format(str(self.swearcount))
         self.send_message(self.CHAN, message)
 
     def command_pong(self, command, user):
@@ -109,8 +114,8 @@ class SwearCounter:
     def command_debug(self, command, user):
         if (self.is_admin(user)):
             states = ["ON", "OFF"]
-            print("DEBUG MODE {}".format(states[self.debug]))
             self.debug = not self.debug
+            print("DEBUG MODE {}".format(states[self.debug]))
 
     def command_swear(self, command, user):
         if (self.is_admin(user)):
@@ -156,8 +161,7 @@ class SwearCounter:
         keys = [i for i in self.commands.keys()]
 
         msg = "Avaliable commands are:{}. Most commands are admin only".format(
-         ", ".join(x for x in keys)
-        )
+         ", ".join(x for x in keys))
         self.send_message(self.CHAN, msg)
 
     def run(self):
@@ -197,9 +201,3 @@ class SwearCounter:
 
             except socket.timeout:
                 print("Socket timeout")
-            except KeyboardInterrupt:
-                break
-
-if __name__ == '__main__':
-    main = SwearCounter()
-    main.run()
