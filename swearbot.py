@@ -37,11 +37,7 @@ class SwearCounter:
 
         self.debug = False
         self.isRunning = True
-
-        self.playing_hangman = False
-        self.hangman_lives = 5
-        self.hangman_word = ""
-        self.hangman_guess = []
+        self.custom_parameters = {}
 
     def send_pong(self, msg):
         self.con.send(bytes('PONG {}\r\n'.format(msg)))
