@@ -18,8 +18,7 @@ def command_COMMANDNAME(self, arg, user):
 The command can then be activated by saying "!COMMANDNAME *args*" in the IRC.
 
 ### Config Sample
-''' JSON
-{
+```json{
   "username": "",
   "bad_words": [
 
@@ -33,7 +32,7 @@ The command can then be activated by saying "!COMMANDNAME *args*" in the IRC.
   "port": 6667,
   "channel": "#CHAN"
 }
-'''
+```
 
 ### TODO
 * Finish the readme
