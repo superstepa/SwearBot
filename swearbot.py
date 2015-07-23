@@ -4,11 +4,6 @@ import json
 import urllib2
 import random
 
-'''
-TODO:
-COMPLETELY MOVE ALL REFERNCES TO EXTERNAL FUNCTIONS OUT OF THE MAIN CLASS
-'''
-
 with open("config.json") as cfg:
     CONFIG = json.load(cfg)
 
@@ -23,10 +18,9 @@ class SwearCounter:
         self.bad_words = CONFIG['bad_words']
         self.swearcount = CONFIG['swearcount']
         self.admins = CONFIG['admins']
+        self.debug = CONFIG['debug']
 
-        self.commands = {'!ping': "command_pong",
-                         "!run": "command_run",
-                         "!debug": "command_debug",
+        self.commands = {"!run": "command_run",
                          "!swear": "command_swear",
                          "!quit": "command_quit",
                          "!save": "command_save",
@@ -35,7 +29,6 @@ class SwearCounter:
                          "!help": "command_help"
                          }
 
-        self.debug = False
         self.isRunning = True
         self.custom_parameters = {}
 
@@ -96,9 +89,6 @@ class SwearCounter:
         message = "Swear Counter: {}".format(str(self.swearcount))
         self.send_message(self.CHAN, message)
 
-    def command_pong(self, command, user):
-        self.send_message(self.CHAN, "Pong")
-
     def command_run(self, command, user):
         if self.is_admin(user):
             command = " ".join(command)
@@ -106,12 +96,6 @@ class SwearCounter:
             self.con.send(bytes('{}\r\n'.format(command)))
         else:
             self.send_message(self.CHAN, "Sorry bub.")
-
-    def command_debug(self, command, user):
-        if (self.is_admin(user)):
-            states = ["ON", "OFF"]
-            self.debug = not self.debug
-            print("DEBUG MODE {}".format(states[self.debug]))
 
     def command_swear(self, command, user):
         if (self.is_admin(user)):
@@ -156,7 +140,7 @@ class SwearCounter:
     def command_help(self, command, user):
         keys = [i for i in self.commands.keys()]
 
-        msg = "Avaliable commands are:{}. Most commands are admin only".format(
+        msg = "Avaliable commands are: {}. Some are admin only".format(
          ", ".join(x for x in keys))
         self.send_message(self.CHAN, msg)
 
@@ -182,7 +166,7 @@ class SwearCounter:
 
                     if len(line) >= 1:
                         if (self.debug):
-                            print(line)
+                            print(' '.join(line))
                         if line[0] == 'PING':
                             self.send_pong(line[1])
 

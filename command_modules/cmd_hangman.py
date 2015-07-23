@@ -1,17 +1,4 @@
 import urllib2
-import json
-import random
-
-
-def command_aww(self, command, user):
-    hdr = {'User-Agent': 'Grabbing an awwducational post by /u/superstepa'}
-    url = "http://www.reddit.com/r/awwducational/new.json"
-    req = urllib2.Request(url, headers=hdr)
-    response = urllib2.urlopen(req).read()
-    data = json.loads(response)
-    post = random.choice(data['data']['children'])
-    title = post['data']['title'].encode('utf-8')
-    self.send_message(self.CHAN, title)
 
 
 def command_hangman(self, command, user):
@@ -41,8 +28,7 @@ def command_hangman(self, command, user):
         if (self.debug):
             print("The word is {}".format(word))
     else:
-        command = "".join(command)
-        command = command[0]
+        command = "".join(command)[0]
         if command in word:
             for x in range(0, len(word)):
                 if command == word[x]:
