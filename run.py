@@ -7,7 +7,10 @@ methods = importModules("command_modules")
 for method in methods:
     name = method.__name__
     print("Attempting to add the {} command.".format(name))
-    main.commands["!"+name.split("_")[1]] = name
-    setattr(main, name, MethodType(method, main))
+    try:
+        main.commands["!"+name.split("_")[1]] = name
+        setattr(main, name, MethodType(method, main))
+    except IndexError:
+        print("Invalid command {}".format(name))
 
 main.run()

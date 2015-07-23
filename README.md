@@ -16,11 +16,30 @@ def command_COMMANDNAME(self, arg, user):
 ```
 
 The command can then be activated by saying "!COMMANDNAME *args*" in the IRC.
+
+### Config Sample
+''' JSON
+{
+  "username": "",
+  "bad_words": [
+
+  ],
+  "swearcount": 0,
+  "admins": [
+    ""
+  ],
+  "host": "irc.twitch.tv",
+  "pass": "",
+  "port": 6667,
+  "channel": "#CHAN"
+}
+'''
+
 ### TODO
 * Finish the readme
 * Redo the config system
 * Move unnecessary functions from the base class to modules.
-* Remove the swear word detector or move it to modules. This project is what happens when you get way too attached to a joke, it's time to let it go. 
+* Remove the swear word detector or move it to modules. This project is what happens when you get way too attached to a joke, it's time to let it go.
 
 License
 ----
