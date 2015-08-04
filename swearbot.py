@@ -4,33 +4,37 @@ import json
 import urllib2
 import random
 
-with open("config.json") as cfg:
-    CONFIG = json.load(cfg)
-
 
 class SwearCounter:
     def __init__(self):
+        with open("config.json", "r") as cfg:
+            CONFIG = json.load(cfg)
+
         self.HOST = CONFIG['host']
         self.PORT = CONFIG['port']
         self.NICK = CONFIG['username']
         self.PASS = CONFIG['pass']
         self.CHAN = CONFIG['channel']
-        self.bad_words = CONFIG['bad_words']
-        self.swearcount = CONFIG['swearcount']
         self.admins = CONFIG['admins']
         self.debug = CONFIG['debug']
 
         self.commands = {"!run": "command_run",
-                         "!swear": "command_swear",
                          "!quit": "command_quit",
                          "!save": "command_save",
-                         "!new_word": "command_words",
                          "!admin": "command_admin",
                          "!help": "command_help"
                          }
 
         self.isRunning = True
-        self.custom_parameters = {}
+        self.temp = {}
+
+        try:
+            with open("custom.json") as custom:
+                self.custom_parameters = json.load(custom)
+        except IOError:
+            self.custom_parameters = {}
+        except ValueError:
+            self.custom_parameters = {}
 
     def send_pong(self, msg):
         self.con.send(bytes('PONG {}\r\n'.format(msg)))
@@ -79,15 +83,6 @@ class SwearCounter:
             msg = msg.split(' ')
             if (msg[0] in self.commands):
                 getattr(self, self.commands[msg[0]])(msg[1:], sender)
-            for word in msg:
-                if word in self.bad_words:
-                    print("Swear word detected: {}".format(word))
-                    self.swearcount += 1
-                    self.announce_swearcount()
-
-    def announce_swearcount(self):
-        message = "Swear Counter: {}".format(str(self.swearcount))
-        self.send_message(self.CHAN, message)
 
     def command_run(self, command, user):
         if self.is_admin(user):
@@ -96,12 +91,6 @@ class SwearCounter:
             self.con.send(bytes('{}\r\n'.format(command)))
         else:
             self.send_message(self.CHAN, "Sorry bub.")
-
-    def command_swear(self, command, user):
-        if (self.is_admin(user)):
-            count = int("".join(x for x in command if x.isdigit()))
-            self.swearcount += count
-            self.announce_swearcount()
 
     def command_quit(self, command, user):
         if (self.is_admin(user)):
@@ -113,22 +102,15 @@ class SwearCounter:
         if (self.is_admin(user)):
             with open("config.json", "r+") as cfg:
                 CONFIG = json.load(cfg)
-                CONFIG['swearcount'] = self.swearcount
                 CONFIG['admins'] = list(set(self.admins))
-                CONFIG['bad_words'] = list(set(self.bad_words))
                 cfg.seek(0)
                 cfg.write(json.dumps(CONFIG))
                 cfg.truncate()
-                print("Saved successfully.")
+                print("Saved the main config successfully.")
 
-    def command_words(self, command, user):
-        if (self.is_admin(user)):
-            command = " ".join(command)
-            self.bad_words.append(command)
-            self.send_message(
-                        self.CHAN,
-                        "Added {} to the list of swear words".format(command)
-                              )
+            with open("custom.json", "w") as custom:
+                custom.write(json.dumps(self.custom_parameters))
+                print("Saved the custom attributes successfully.")
 
     def command_admin(self, command, user):
         if (self.is_admin(user)):
@@ -181,3 +163,6 @@ class SwearCounter:
 
             except socket.timeout:
                 print("Socket timeout")
+
+            except KeyboardInterrupt:
+                self.command_quit('', self.admins[0])

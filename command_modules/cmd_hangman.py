@@ -1,49 +1,55 @@
 import urllib2
 
+'''
+This is really messy at the moment, needs to be completely changed.
+I need to figure out how to assign values to a reference without
+ creating a new object.
+
+'''
+
 
 def command_hangman(self, command, user):
-    if "playing_hangman" not in self.custom_parameters:
-        self.custom_parameters["playing_hangman"] = False
-        self.custom_parameters["hangman_lives"] = 5
-        self.custom_parameters["hangman_word"] = ""
-        self.custom_parameters["hangman_guess"] = []
+    if 'is_playing' not in self.temp:
+        self.temp['is_playing'] = False
+        self.temp['lives'] = 5
+        self.temp['word'] = ""
+        self.temp['guess'] = []
 
-    is_playing = self.custom_parameters["playing_hangman"]
-    lives = self.custom_parameters["hangman_lives"]
-    word = self.custom_parameters["hangman_word"]
-    guess = self.custom_parameters["hangman_guess"]
-
-    if not is_playing:
-        is_playing = True
+    if not self.temp['is_playing']:
+        self.temp['is_playing'] = True
         valid = "abcdefghijklmnopqrstuvwxyz"
-        word = urllib2.urlopen(
+        self.temp['word'] = urllib2.urlopen(
             "http://randomword.setgetgo.com/get.php").read()
-        word = ''.join(
-           char for char in word if char in valid)
-        lng = len(word)
-        lives = lng
-        guess = ["*"]*lng
+        self.temp['word'] = ''.join(
+           char for char in self.temp['word'] if char in valid)
+        lng = len(self.temp['word'])
+        self.temp['lives'] = lng
+        self.temp['guess'] = ["*"]*lng
         self.send_message(self.CHAN, "A new game of hangman has started.\
         The word has {} letters.".format(lng))
         if (self.debug):
-            print("The word is {}".format(word))
+            print("The word is {}".format(self.temp['word']))
     else:
-        command = "".join(command)[0]
-        if command in word:
-            for x in range(0, len(word)):
-                if command == word[x]:
-                    word[x] = command
-            if ('*' not in guess):
+        try:
+            command = "".join(command)[0]
+        except IndexError:
+            return
+        if command in self.temp['word']:
+            for x in range(0, len(self.temp['word'])):
+                if command == self.temp['word'][x]:
+                    self.temp['guess'][x] = command
+            if ('*' not in self.temp['guess']):
                 msg = "You won with {} lives left out of {}!".format(
-                    lives, len(word))
-                is_playing = False
+                    self.temp['lives'], len(self.temp['word']))
+
+                self.temp['is_playing'] = False
             else:
-                msg = ''.join(x for x in guess)
+                msg = ''.join(x for x in self.temp['guess'])
         else:
-            if (lives > 1):
-                lives -= 1
-                msg = "You have {} lives left".format(lives)
+            if (self.temp['lives'] > 1):
+                self.temp['lives'] -= 1
+                msg = "You have {} lives left".format(self.temp['lives'])
             else:
-                msg = "You lose. The word was {}".format(word)
-                self.is_playing = False
+                msg = "You lose. The word was {}".format(self.temp['word'])
+                self.temp['is_playing'] = False
         self.send_message(self.CHAN, msg)
