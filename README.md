@@ -13,6 +13,8 @@ Any python file placed into the "command_directories" (default name) directory w
 def command_COMMANDNAME(self, arg, user):
     pass
 #self is the main class, arg is the arguments sent by the user and user is the username
+
+#If you need to create a variable, use the self.temp dictionary for temporary variables and self.custom_parameters for persistent ones.
 ```
 
 The command can then be activated by saying "!COMMANDNAME *args*" in the IRC.
@@ -37,8 +39,6 @@ The command can then be activated by saying "!COMMANDNAME *args*" in the IRC.
 ### TODO
 * Finish the readme
 * Redo the config system
-* Move unnecessary functions from the base class to modules.
-* Remove the swear word detector or move it to modules. This project is what happens when you get way too attached to a joke, it's time to let it go.
 
 License
 ----
