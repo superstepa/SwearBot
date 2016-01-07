@@ -16,6 +16,7 @@ def command_deathcount(self, command, user):
     message = "Death Counter: {}".format(count)
     self.send_message(self.CHAN, message)
 
+
 def command_setdeath(self, command, user):
     if (self.is_admin(user)):
         count = self.get_int_from_msg(command)
