@@ -111,7 +111,7 @@ class SwearCounter:
                 data = data_split.pop()
 
                 for line in data_split:
-                    line = str.rstrip(str(line))
+                    line = str.rstrip(str(line.encode('utf-8')))
                     line = str.split(str(line))
 
                     if len(line) >= 1:
