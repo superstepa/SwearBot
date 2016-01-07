@@ -1,0 +1,1 @@
+{"username": "swearcounterbot", "modules_dir": "command_modules", "admins": ["superstepa"], "host": "irc.twitch.tv", "pass": "oauth:", "debug": false, "port": 6667, "channel": "#CHAN"}
