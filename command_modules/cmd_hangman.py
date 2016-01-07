@@ -1,10 +1,7 @@
 from random import choice
-
+import os
 '''
 This is really messy at the moment, needs to be completely changed.
-I need to figure out how to assign values to a reference without
- creating a new object.
-
 '''
 
 
@@ -18,8 +15,12 @@ def command_hangman(self, command, user):
     if not self.temp['is_playing']:
         self.temp['is_playing'] = True
         valid = "abcdefghijklmnopqrstuvwxyz"
-        l = open("wordsEn.txt").read().splitlines()
-        self.temp['word'] = choice(l).strip("\n")
+
+        l = open(
+          os.path.join(os.path.dirname(__file__),
+                       '../data/wordsEn.txt')).read().splitlines()
+
+        self.temp['word'] = choice(l).strip()
 
         self.temp['word'] = ''.join(
            char for char in self.temp['word'] if char in valid)

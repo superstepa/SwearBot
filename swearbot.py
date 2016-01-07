@@ -106,7 +106,7 @@ class SwearCounter:
 
         while self.isRunning:
             try:
-                data = data+self.con.recv(1024).decode('UTF-8')
+                data = data+self.con.recv(1024).decode('utf-8')
                 data_split = re.split(r"[~\r\n]+", data)
                 data = data_split.pop()
 

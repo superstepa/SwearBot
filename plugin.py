@@ -16,3 +16,10 @@ def importModules(dir):
     for module in modules:
         methods += [f for _, f in module.__dict__.iteritems() if callable(f)]
     return methods
+
+'''
+def command(name, dict):
+    def _(fn):
+        dict[name] = command
+    return _
+'''

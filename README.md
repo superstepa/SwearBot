@@ -35,7 +35,8 @@ The command can then be activated by saying "!COMMANDNAME *args*" in the IRC.
 ### TODO
 * Finish the readme
 * Redo the config system
-
+* Fix unicode support
+* Rewrite the plugin system. Using hardcoded method names for commands? What was I thinking
 License
 ----
 MIT
