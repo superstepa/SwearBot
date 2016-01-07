@@ -17,7 +17,7 @@ class SwearCounter:
         self.CHAN = CONFIG['channel']
         self.admins = CONFIG['admins']
         self.debug = CONFIG['debug']
-
+        # Default commands
         self.commands = {"!run": "command_run",
                          "!quit": "command_quit",
                          "!save": "command_save",
@@ -26,6 +26,7 @@ class SwearCounter:
                          }
 
         self.isRunning = True
+        # Keeps temporary variables accessible by command methods.
         self.temp = {}
 
         try:
@@ -82,6 +83,8 @@ class SwearCounter:
         if len(msg) >= 1:
             msg = msg.split(' ')
             if (msg[0] in self.commands):
+                '''Run the command method if the string is recognized as the
+                   command. The arguments are the remainder of the message'''
                 getattr(self, self.commands[msg[0]])(msg[1:], sender)
 
     def command_run(self, command, user):

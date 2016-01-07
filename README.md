@@ -22,10 +22,6 @@ The command can then be activated by saying "!COMMANDNAME *args*" in the IRC.
 ### Config Sample
 ```json{
   "username": "",
-  "bad_words": [
-
-  ],
-  "swearcount": 0,
   "admins": [
     ""
   ],
