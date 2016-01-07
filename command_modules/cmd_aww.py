@@ -4,7 +4,7 @@ import random
 
 
 def command_aww(self, command, user):
-    hdr = {'User-Agent': 'Grabbing an awwducational post by /u/superstepa'}
+    hdr = {'User-Agent': 'Grabbing a random awwducational post'}
     url = "http://www.reddit.com/r/awwducational/new.json"
     req = urllib2.Request(url, headers=hdr)
     response = urllib2.urlopen(req).read()

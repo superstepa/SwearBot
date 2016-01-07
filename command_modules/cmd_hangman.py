@@ -1,4 +1,4 @@
-import urllib2
+from random import choice
 
 '''
 This is really messy at the moment, needs to be completely changed.
@@ -18,8 +18,9 @@ def command_hangman(self, command, user):
     if not self.temp['is_playing']:
         self.temp['is_playing'] = True
         valid = "abcdefghijklmnopqrstuvwxyz"
-        self.temp['word'] = urllib2.urlopen(
-            "http://randomword.setgetgo.com/get.php").read()
+        l = open("wordsEn.txt").read().splitlines()
+        self.temp['word'] = choice(l).strip("\n")
+
         self.temp['word'] = ''.join(
            char for char in self.temp['word'] if char in valid)
         lng = len(self.temp['word'])
