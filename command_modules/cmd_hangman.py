@@ -16,19 +16,22 @@ def command_hangman(self, command, user):
         self.temp['is_playing'] = True
         valid = "abcdefghijklmnopqrstuvwxyz"
 
-        l = open(
+        with open(
           os.path.join(os.path.dirname(__file__),
-                       '../data/wordsEn.txt')).read().splitlines()
+                       '../data/wordsEn.txt')) as f:
+                        l = f.read().splitlines()
 
         self.temp['word'] = choice(l).strip()
 
         self.temp['word'] = ''.join(
            char for char in self.temp['word'] if char in valid)
+
         lng = len(self.temp['word'])
         self.temp['lives'] = lng
         self.temp['guess'] = ["*"]*lng
         self.send_message(self.CHAN, "A new game of hangman has started.\
         The word has {} letters.".format(lng))
+
         if (self.debug):
             print("The word is {}".format(self.temp['word']))
     else:
@@ -40,6 +43,7 @@ def command_hangman(self, command, user):
             for x in range(0, len(self.temp['word'])):
                 if command == self.temp['word'][x]:
                     self.temp['guess'][x] = command
+
             if ('*' not in self.temp['guess']):
                 msg = "You won with {} lives left out of {}!".format(
                     self.temp['lives'], len(self.temp['word']))
