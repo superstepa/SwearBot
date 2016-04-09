@@ -1,4 +1,4 @@
-from random import choice
+from random import randrange
 import os
 '''
 This is really messy at the moment, needs to be completely changed.
@@ -15,13 +15,17 @@ def command_hangman(self, command, user):
     if not self.temp['is_playing']:
         self.temp['is_playing'] = True
         valid = "abcdefghijklmnopqrstuvwxyz"
+        FILE_NAME = "../data/wordsEn.txt"
+        PATH = os.path.join(os.path.dirname(__file__), FILE_NAME)
 
-        with open(
-          os.path.join(os.path.dirname(__file__),
-                       '../data/wordsEn.txt')) as f:
-                        l = f.read().splitlines()
+        size = os.path.getsize(PATH)
+        offset = randrange(size)
+        with open(PATH) as f:
+                        f.seek(offset)
+                        f.readline()  # Discard first line
+                        choice = f.readline()
 
-        self.temp['word'] = choice(l).strip()
+        self.temp['word'] = choice
 
         self.temp['word'] = ''.join(
            char for char in self.temp['word'] if char in valid)
